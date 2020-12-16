@@ -1,0 +1,35 @@
+[
+    {
+      "PMID": "32524147",
+      "Title": "What patients \"see\" doctors in online fever clinics during COVID-19 in Wuhan?",
+      "Authors": [
+        "Li, Gang",
+        "Fan, Guorui",
+        "Chen, Yanyan",
+        "Deng, Zhaohua"
+      ],
+      "Abstract": "OBJECTIVE: In December 2019, coronavirus disease 2019 (COVID-19) occurred in Wuhan, China. Online fever clinics were developed by hospitals, largely relieving the hospital's burden. Online fever clinics could help people stay out of crowded hospitals and prevent the risk of cross infections. The objective of our study was to describe the patient characteristics of an online fever clinic and explore the most important concerns and question of online patients. MATERIALS AND METHODS: Our study extracted data from fever clinic records in medical information systems from January 24 to February 18, 2020 in a tertiary hospital in Wuhan. We described the characteristics of patients in fever clinic, then we extracted and classified questions of patient consultations through the online fever clinic dataset. RESULTS: For the 64 487 patients who attended the online fever clinic, the average age was 30.4 years, and 37 665 (58.4%) were female patients. The current state of patients from online were home without isolation (52 360 [81.2%]), home isolated (11 152 [17.29%]), and outpatient observation (975 [1.51%]). From the 594 patient questions analyzed, confirming diagnosis and seeking medical treatment account for 60.61% and 38.05%, respectively, followed by treating (25.59%), preventing (4.38%), and relieving anxiety (1.68%). DISCUSSION: Online fever clinics can effectively relieve patients' mood of panic, and doctors can guide patients with suspected of COVID-19 to isolate and protect themselves through online fever clinic. Online fever clinics can also help to reduce the pressure of hospital fever clinics and prevent cross infection. CONCLUSIONS: This study indicated the importance of online fever clinics during the COVID-19 outbreak for prevention and control."
+    },
+    {
+      "PMID": "32437937",
+      "Title": "Causes of fever in primary care in Southeast Asia and the performance of C-reactive protein in discriminating bacterial from viral pathogens.",
+      "Authors": [
+        "Althaus, Thomas",
+        "Thaipadungpanit, Janjira",
+        "Greer, Rachel C",
+        "Swe, Myo Maung Maung",
+        "Dittrich, Sabine",
+        "Peerawaranun, Pimnara",
+        "Smit, Pieter W",
+        "Wangrangsimakul, Tri",
+        "Blacksell, Stuart",
+        "Winchell, Jonas M",
+        "Diaz, Maureen H",
+        "Day, Nicholas P J",
+        "Smithuis, Frank",
+        "Turner, Paul",
+        "Lubell, Yoel"
+      ],
+      "Abstract": "OBJECTIVES: This study investigated causes of fever in the primary levels of care in Southeast Asia, and evaluated whether C-reactive protein (CRP) could distinguish bacterial from viral pathogens. METHODS: Blood and nasopharyngeal swab specimens were taken from children and adults with fever (>37.5 degrees C) or history of fever (<14 days) in Thailand and Myanmar. RESULTS: Of 773 patients with at least one blood or nasopharyngeal swab specimen collected, 227 (29.4%) had a target organism detected. Influenza virus type A was detected in 85/227 cases (37.5%), followed by dengue virus (30 cases, 13.2%), respiratory syncytial virus (24 cases, 10.6%) and Leptospira spp. (nine cases, 4.0%). Clinical outcomes were similar between patients with a bacterial or a viral organism, regardless of antibiotic prescription. CRP was higher among patients with a bacterial organism compared with those with a viral organism (median 18 mg/L, interquartile range [10-49] versus 10 mg/L [</=8-22], p = 0.003), with an area under the curve of 0.65 (95% CI 0.55-0.75). CONCLUSIONS: Serious bacterial infections requiring antibiotics are an exception rather than the rule in the first line of care. CRP testing could assist in ruling out such cases in settings where diagnostic uncertainty is high and routine antibiotic prescription is common. The original CRP randomised controlled trial was registered with ClinicalTrials.gov, number NCT02758821."
+    }
+  ]

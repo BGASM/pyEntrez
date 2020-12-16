@@ -1,0 +1,75 @@
+{
+  "HELP": [
+    [
+      "efetch Retrieves records in the requested format from a list of one or more primary IDs or from the user’s environment"
+    ],
+    [
+      "epost Posts a file containing a list of primary IDs for future use in the user’s environment to use with subsequent"
+    ],
+    [
+      "Search strategies esearch Searches and retrieves primary IDs (for use in EFetch, ELink, and ESummary) and term translations and optionally retains results for future use in the user’s environment."
+    ],
+    [
+      "elink Checks for the existence of an external or Related Articles link from a list of one or more primary IDs. Retrieves primary IDs and relevancy scores for links to Entrez databases or Related Articles; creates a hyperlink to the primary LinkOut provider for a specific ID and database, or lists LinkOut URLs and Attributes for multiple IDs."
+    ],
+    [
+      "einfo Provides field index term counts, last update, and available links for each database.esummary Retrieves document summaries from a list of primary IDs or from the user’s environment."
+    ],
+    [
+      "egquery Provides Entrez database counts in XML for a single search using Global Query."
+    ],
+    [
+      "espell Retrieves spelling suggestions."
+    ],
+    [
+      "ecitmatch Retrieves PubMed IDs (PMIDs) that correspond to a set of input citation strings."
+    ],
+    [
+      "read Parses the XML results returned by any of the above functions. Typical usage is: "
+    ]
+  ],
+  "NEWUSR": [
+    [
+      "Default workspace will be set to: "
+    ],
+    [
+      "If you would like to select a different workspace please:",
+      "Enter a workspace path.: "
+    ]
+  ],
+  "OVERWRITE": [
+    "That path is in use. If you want to overwrite enter FORCE: ",
+    "Note, force will overwrite any data in this folder.",
+    ".:"
+  ],
+  "LOGO": [
+   "                        _                ",
+   " _ __  _   _  ___ _ __ | |_ _ __ ___ ____",
+   "| '_ \\| | | |/ _ \\ '_ \\| __| '__/ _ \\_  /",
+   "| |_) | |_| |  __/ | | | |_| | |  __// / ",
+   "| .__/ \\__, |\\___|_| |_|\\__|_|  \\___/___|",
+   "|_|    |___/                             "
+  ],
+  "SETTING_LOGO": [
+    " ____  ____  ____  ____  __  __ _   ___   ____  \n ",
+    "/ ___)(  __)(_  _)(_  _)(  )(  ( \\ / __) / ___) \n",
+    "\\___ \\ ) _)   )(    )(   )( /    /( (_ \\ \\___ \\ \n",
+    "(____/(____) (__)  (__) (__)\\_)__) \\___/ (____/ "
+  ],
+  "NOTUI_WELCOME": [
+    "Welcome to pyEntrez.",
+    "",
+    "What would you like to do?",
+    "",
+    " [1]           [2]         [3]",
+    "SEARCH      SETTINGS      ABOUT\n"
+  ],
+  "QUERY": [
+    "Enter your search query.",
+    ".:"
+  ],
+  "NO_DB": [
+    "You do not have a Database Client selected.",
+    "To browse articles you need to configure your DB in my_settings."
+  ]
+}
