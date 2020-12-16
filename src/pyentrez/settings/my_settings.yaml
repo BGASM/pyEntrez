@@ -1,0 +1,17 @@
+# Default Config Settings
+
+# Scraper Settings
+email: notarealemail@fake.edu
+user: None
+db: pubmed
+sort: relevance
+retmax: 200
+retmode: txt
+rettype: medline
+
+# Command Line Settings
+version: False
+credentials: False
+mongo: False
+TUI: False
+INIT: False
