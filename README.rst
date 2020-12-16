@@ -60,7 +60,7 @@ MIT © William Slattery 2020
 
  
 
-.. |MIT| image:: https://img.shields.io/github/license/BGASM/pyEntrez?style=plastic
+.. |MIT| image:: https://img.shields.io/github/license/BGASM/pyentrez?style=plastic
 
 .. |CodeFactor| image:: https://www.codefactor.io/repository/github/bgasm/pyentrez/badge?style=plastic
    :target: https://www.codefactor.io/repository/github/bgasm/pyentrez

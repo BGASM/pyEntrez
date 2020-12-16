@@ -17,15 +17,15 @@ import sys
 
 import tomlkit
 
-sys.path.insert(0, os.path.abspath('../pyentrez'))
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../../src/pyentrez'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
 
 
 def _get_project_meta():
-    with open('../pyproject.toml') as pyproject:
+    with open('../../pyproject.toml') as pyproject:
         file_contents = pyproject.read()
 
     return tomlkit.parse(file_contents)['tool']['poetry']
@@ -74,6 +74,9 @@ autodoc_default_flags = {
     'undoc-members': 'code,error_template',
     'exclude-members': '__dict__,__weakref__',
 }
+
+## Generate autodoc stubs with summaries from code
+autosummary_generate = True
 
 # Set `typing.TYPE_CHECKING` to `True`:
 # https://pypi.org/project/sphinx-autodoc-typehints/
