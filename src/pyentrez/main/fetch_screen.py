@@ -80,7 +80,7 @@ class FetchScreen(sm.MasterScreen):
 
     def query(self) -> None:
         """Submits query to configured db."""
-        query_message = self.call_cmd('query_box', get)
+        query_message = self.call_cmd('query_box', 'get')
         self.clear('query_box')
         uid = self.scraper.esearch(query_message)
         results = self.scraper.efetch(uid)

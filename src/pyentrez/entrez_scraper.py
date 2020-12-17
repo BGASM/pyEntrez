@@ -47,7 +47,7 @@ class Scraper(object):
         Returns:
              Unpacked dict that contains list of article UID's that match query.
         """
-        params = self._construct_search_params()
+        params = construct_search_params()
         handle = ez.esearch(
             db=os.environ['PYENT_DB'],
             term=term,
@@ -72,7 +72,7 @@ class Scraper(object):
         Returns:
             List of article dict's to be passed into a user database
         """
-        params = self._construct_fetch_params()
+        params = construct_fetch_params()
         uid = ','.join(uid['IdList'])
         handle = ez.efetch(
             db=os.environ['PYENT_DB'],
