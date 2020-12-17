@@ -4,25 +4,34 @@
 ## Dependencies
 
 We use [poetry](https://github.com/python-poetry/poetry) to manage the dependencies.
-
-To install them you would need to run `install` command:
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+```
+or  on windows powershell:
+```bash
+(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+```
+Then within the cloned pyentrez root directory to install the dependencies you would need to run `install` command:
 
 ```bash
 poetry install
 ```
+Note, if you plan on developing any portion of the review screen or database interaction you will also need to add 
+pymongo. (This is required even if you want to design sql interactions, as v.0.1.0 was designed with pymongo, and all 
+basic hooks at this time require the pymongo library. Future releases we will make this more on-the-fly, so an SQL user 
+won't need to install pymongo etc.)
+```bash
+poetry install -E pymongo
+```
 
-To activate your `virtualenv` run `poetry shell`.
-
-
-## One magic command
-
-Run `make test` to run everything we have!
+Then to activate your `virtualenv` run `poetry shell`. Now you should be able to run the script using `py pyentrez` 
 
 
 ## Tests
 
 We use `pytest` and `flake8` for quality control.
-We also use [wemake_python_styleguide](https://github.com/wemake-services/wemake-python-styleguide) to enforce the code quality.
+We also use [wemake_python_styleguide](https://github.com/wemake-services/wemake-python-styleguide) to enforce the 
+code quality.
 
 To run all tests:
 
@@ -46,7 +55,7 @@ We use `mypy` to run type checks on our code.
 To use it:
 
 ```bash
-mypy pyentrez tests/**/*.py
+mypy src/pyentrez/.
 ```
 
 This step is mandatory during the CI.
@@ -54,23 +63,27 @@ This step is mandatory during the CI.
 
 ## Submitting your code
 
-We use [trunk based](https://trunkbaseddevelopment.com/)
-development (we also sometimes call it `wemake-git-flow`).
+We use [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+development.
 
 What the point of this method?
 
-1. We use protected `master` branch,
-   so the only way to push your code is via pull request
-2. We use issue branches: to implement a new feature or to fix a bug
-   create a new branch named `issue-$TASKNUMBER`
-3. Then create a pull request to `master` branch
-4. We use `git tag`s to make releases, so we can track what has changed
-   since the latest release
+1. We use a protected `main` branch that represents the last working release. It only merges with `release` branches 
+   (and occasionally `hotfix` branches.)
+2. A `develop` branch from main will contain the complete, unabridged commit history of the project. When you clone 
+   the repository, this is the branch that you should `track`.
+3. All changes are done via `feature` branches checked-out from `develop`. You can make any changes you want on a 
+   Feature-branch and push those branches onto the central repository. When your feature is complete, request a `pull` 
+   back into `develop` so it can be reviewed and merged in.
+4. When `develop` has enough features for a new release, a `release` branch is split from `develop`. At this point,
+    no new features will be included in this release, only bugfixes, and documentation. Any features being worked on 
+   after a release branch will be included in the next release.
+5. Once all testing and fixes on `release` are complete it will be merged into `main` and back into `develop`
 
 So, this way we achieve an easy and scalable development process
 which frees us from merging hell and long-living branches.
 
-In this method, the latest version of the app is always in the `master` branch.
+In this method, the latest version of the app is always in the `main` branch.
 
 ### Before submitting
 
