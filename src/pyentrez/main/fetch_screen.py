@@ -116,7 +116,7 @@ class FetchScreen(sm.MasterScreen):
 
         """
         out = []
-        for setting in ev.get_settings():
+        for setting in ev.settings:
             tmp_str = [setting[0], os.getenv(setting[1], default='')]
             out.append(' : '.join(tmp_str))
             out.append('\n')

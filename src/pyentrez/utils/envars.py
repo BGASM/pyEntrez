@@ -52,35 +52,6 @@ settings_eFetch: List[Tuple[str, str]] = [
 ]
 
 
-# noinspection PyPep8Naming
-def get_settings_eSearch() -> List[Tuple[str, str]]:
-    return settings_eSearch
-
-
-# noinspection PyPep8Naming
-def get_settings_ePost() -> List[Tuple[str, str]]:
-    return settings_ePost
-
-
-# noinspection PyPep8Naming
-def get_settings_eSummary() -> List[Tuple[str, str]]:
-    return settings_eSummary
-
-
-# noinspection PyPep8Naming
-def get_settings_eFetch() -> List[Tuple[str, str]]:
-    return settings_eFetch
-
-
-def get_settings() -> List[Tuple[str, str]]:
-    return settings
-
-
-def get_ev() -> List[str]:
-    """Just a global return."""
-    return pyenv
-
-
 def setenv(args: Dict[str, Any]) -> None:
     """Function to set envars based on input from CLI argparse.
 

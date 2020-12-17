@@ -93,7 +93,7 @@ def construct_search_params():
     query.
     """
     params = {}
-    for setting in ev.get_settings_eSearch():
+    for setting in ev.settings_eSearch:
         if os.environ.get(setting[1]):
             params.update({setting[0].lower(): os.environ.get(setting[1])})
     return params
@@ -107,7 +107,7 @@ def construct_fetch_params():
     query.
     """
     params = {}
-    for setting in ev.get_settings_eFetch():
+    for setting in ev.settings_eFetch:
         if os.environ.get(setting[1]):
             params.update({setting[0].lower(): os.environ.get(setting[1])})
     return params
