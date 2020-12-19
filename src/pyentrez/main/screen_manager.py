@@ -6,8 +6,8 @@ import py_cui.widgets
 from loguru import logger
 
 import pyentrez
+from pyentrez import exceptions
 from pyentrez.utils import envars as ev
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import logic
 from pyentrez.utils import string_utils as su
 
@@ -61,7 +61,7 @@ class ScreenManager(object):
         elif selection == 'Settings':
             self.manager.open_window('SET')
         elif selection == 'Exit':
-            lu.clean_exit()
+            raise exceptions.CleanExit()
 
 
 @attr.s(kw_only=True)

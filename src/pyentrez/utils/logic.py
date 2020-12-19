@@ -1,13 +1,16 @@
+"""Module handles complex logic functions that don't need to be explicitly stated in other places.
+"""
 from pathlib import Path
 from typing import Tuple
 
 from loguru import logger
 
-from pyentrez.utils import logger_utils as lu
+from pyentrez import exceptions
 from pyentrez.utils import string_utils as su
 
 
 def fetch_check(setting: str, change: str) -> Tuple[bool, str]:
+    """Verifies queries sent to eFetch."""
     error: bool = False
     err: str = ''
     if setting == 'Retmax':
@@ -72,5 +75,5 @@ def path_set(path: Path) -> bool:
                 logger.error(f'{error}')
             tryagain = False
         else:
-            lu.clean_exit()
+            raise exceptions.CleanExit()
     return tryagain

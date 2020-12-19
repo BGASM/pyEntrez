@@ -1,3 +1,5 @@
+"""Settings Screen reads currently loaded settings and allows permanent or on the fly changes.
+"""
 # pyEntrez
 # noinspection PyUnresolvedReferences
 from typing import Any, List, Optional, Tuple
@@ -10,7 +12,6 @@ import pyentrez
 from pyentrez import entrez_scraper as SCRAPE
 from pyentrez.main import screen_manager as sm
 from pyentrez.utils import envars as ev
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import logic
 from pyentrez.utils import string_utils as su
 
