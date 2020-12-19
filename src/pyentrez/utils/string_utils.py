@@ -6,6 +6,7 @@ from importlib.metadata import distribution as dist
 from pathlib import Path
 from shutil import copy2 as cp
 from typing import List
+import attr
 
 from loguru import logger
 from yaml import dump as dmp
@@ -36,21 +37,36 @@ class wrap(textwrap.TextWrapper):
         self.tabsize=4
 '''
 
-
+@attr.s
 class StringUtils(object):
-    def __init__(self, x_dim, y_dim):
-        self.wrapp = textwrap.TextWrapper(
-            width=x_dim,
-            max_lines=y_dim,
+    x_dim = attr.ib()
+    y_dim = attr.ib()
+    wrapp: textwrap.TextWrapper() = attr.ib()
+
+    @wrapp.default
+    def _wrapp_initialization(self):
+        return textwrap.TextWrapper(
+            width=self.x_dim,
+            max_lines=self.y_dim,
             break_long_words=False,
-            break_on_hyphens=False
+            break_on_hyphens=False,
         )
 
+
     def update_dim(self, x_dim, y_dim):
+        """Update xy dimensions of the wrapper."""
         self.wrapp.width = x_dim
         self.wrapp.max_lines = y_dim
 
     def format_text(self, *args):
+        """Reformat text to fit within wrapper dimensions.
+
+        Args:
+            *args: text string to be formatted.
+
+        Returns:
+            Returns the formatted string.
+        """
         text_in = (args[0]).replace('\n\n', '\r').replace('\n', ' ').splitlines()
         return_str = []
         for string in text_in:
@@ -69,7 +85,14 @@ class StringUtils(object):
         return r2.join(helpstr)
 
     def format_article_list(self, *args):
-        # return tuple([cursor['PMID'], cursor['TI']])
+        """Takes the list of article titles and formats them so each line fits within dimensions.
+
+        Args:
+            *args: list of article titles
+
+        Returns:
+            Single string with all article titles joined.
+        """
         article_list = []
         for article in args[0]:
             article_list.append(self.wrapp.fill(article[1]))
