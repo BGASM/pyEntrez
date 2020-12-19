@@ -30,7 +30,6 @@ from pyentrez import exceptions
 from pyentrez.main import cmd_entrez, entrez_manager
 from pyentrez.main import user_cred as uc
 from pyentrez.utils import envars as ev
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import string_utils as su
 from pyentrez.utils import variables as vl
 
@@ -106,6 +105,8 @@ class MyCUI(py_cui.PyCUI):
 
 @attr.s(slots=True)
 class GetParser(object):
+    """Create a parser using the settings defined in the variables module.
+    """
     path = attr.ib()
     args = attr.ib()
 
@@ -172,17 +173,36 @@ class GetParser(object):
 
 @attr.s
 class CLI(object):
+    """CLI instance parses args and controls entry into the application.
+
+    Attributes:
+        self.version: version of pyentrez.
+        self.copyright: copyright string.
+        self.catastrophic_failure: whether or not a catastrophic_failure has been raised.
+        self.args: args passed from commandline.
+    """
     version: str = attr.ib(default=pyentrez.__version__)
     copyright: str = attr.ib(default=pyentrez.__copyright__)
-    catastrophic_failure: Optional[bool] = attr.ib(default=False)
+    catastrophic_failure: bool = attr.ib(default=False)
     args: Any = attr.ib(init=False)
 
     def initialize(self):
+        """Get a parser, set the args, and set Home path."""
         parser = GetParser.get_parser()
         self.args = parser.args
         self.args['Home'] = parser.path
 
     def run_pyentrez(self):
+        """Handles application behavior based on parsed args.
+
+        If version is true it prints version info and then raises a normal SystemExit, which
+        allows application to shut down.
+
+        If INIT is true it takes the user through creation by calling UserCred's first_run.
+
+        Otherwise it calls envars to add all args to envars and then determines whether to start
+        pyentrez in TUI-mode or interactive cmd prompt.
+        """
         if self.args['version']:
             print(f'pyentrez - {self.version}')
             print(self.copyright)
@@ -223,6 +243,7 @@ class CLI(object):
         raise SystemExit(self.catastrophic_failure)
 
     def _run(self):
+        """Abstraction to make sure application is only run if a CLI instance calls execute."""
         self.initialize()
         self.run_pyentrez()
 
@@ -242,6 +263,8 @@ class CLI(object):
         """
         try:
             self._run()
+        except exceptions.CleanExit as exc:
+            self.clean_exit()
         except KeyboardInterrupt as exc:
             print('... stopped')
             logger.critical(f'Caught keyboard interrupt from user:{exc}')

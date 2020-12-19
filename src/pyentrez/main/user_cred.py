@@ -116,11 +116,13 @@ def get_usr_path() -> Tuple[bool, check_path]:
 
 
 def safe_write_file(path: Path, users_dict) -> Any:
+    """Safe opening of yaml file"""
     with open(path, 'w') as file2:
         return dmp(users_dict, file2)
 
 
 def safe_open_file(path: Path) -> Dict[str, Any]:
+    """Safe opening of yaml files."""
     with open(path) as file1:
         return sl(file1)
 

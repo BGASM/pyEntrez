@@ -1,3 +1,11 @@
+"""Module that handles settings and envars.
+On initialization this module will create a list of tuples containing the text version of a setting
+and its PYENT-envar representation.
+
+Entrez-command-specific formats are created and are callable. (settings_eSearc, etc.)
+
+Sets all the parsed settings to envars
+"""
 from os import environ as env
 from typing import Any, Dict, List, Tuple
 

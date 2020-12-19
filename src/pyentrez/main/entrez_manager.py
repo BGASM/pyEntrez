@@ -23,7 +23,6 @@ from pyentrez.db import mongo_entrez as MDB
 from pyentrez.main import fetch_screen as FETCH
 from pyentrez.main import review_screen as REVIEW
 from pyentrez.main import settings_screen as SETTINGS
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import string_utils as su
 
 # Main pyEntrez manager class
@@ -91,6 +90,7 @@ class EntrezManager(object):
         self.mgr.update(self._manager_initialization())
         self.widget.update(self._widget_initialization())
         self.open_window('FETCH')
+
     # End of Initialization functions
 
     def refresh_h_w(self):

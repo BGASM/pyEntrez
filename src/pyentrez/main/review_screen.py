@@ -16,7 +16,6 @@ import pyentrez
 from pyentrez import entrez_scraper as SCRAPE
 from pyentrez.db import mongo_entrez as MDB
 from pyentrez.main import screen_manager as sm
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import string_utils as su
 
 # Logger
