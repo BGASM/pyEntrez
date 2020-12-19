@@ -5,6 +5,7 @@ from loguru import logger
 
 import attr
 from pymongo import MongoClient as MC
+from pymongo.errors import ConnectionFailure
 from pyentrez.utils import pathloc as pl
 
 
@@ -34,13 +35,20 @@ class DBLoader:
     db: Any = attr.ib(init=False)
     coll: Any = attr.ib(init=False)
 
-    def __attrs_post_init__(self):
+    def initialize(self):
+        logger.debug("Initializing database.")
         if self.cloud:
             self.client = connect_client(self.uri)
         else:
             self.client = connect_client(self.host, self.port)
+        try:
+            self.client.admin.command('ismaster')
+        except ConnectionFailure:
+            return 1
         self.db = get_db(self.client, self.d1)
         self.coll = get_coll(self.db, self.c1)
+        logger.debug("Database initialized.")
+        return 0
 
 
     def get_titles(self):
@@ -55,6 +63,10 @@ class DBLoader:
 
     def add_many(self, articles):
         result = []
+        try:
+            self.client.admin.command('ismaster')
+        except ConnectionFailure:
+            return 1
         for paper in articles:
             PMID = paper['PMID']
             tmp = self.coll.replace_one(
@@ -63,8 +75,7 @@ class DBLoader:
                 upsert=True,
             )
             result.append(tmp.upserted_id)
-        # result = self.coll.insert_many(articles)
-        return result
+        return 0
 
 
 def connect_client(*args):

@@ -98,8 +98,11 @@ class ReviewScreen(sm.MasterScreen):
     def set_initial_values(self) -> None:
         """Function that initializes status bar and initial text for Review screen."""
         self.call_cmd('read_panel', 'set_text', self.widgets['read_panel']['su'].get_entrez_help())
-        self.refresh_settings()
         self.manager.root.set_status_bar_text('Settings - Backspace | Quit - q')
+        if not self.manager.db_set:
+            self.execute_long_operation('Loading Database', self.load_db)
+        else:
+            self.refresh_settings()
 
     def refresh_settings(self) -> None:
         """Clears and fetches titles of articles held in Database.
@@ -118,13 +121,15 @@ class ReviewScreen(sm.MasterScreen):
             and concatenates all the titles into a string that gets returned. This instance's
             self.articles Set contains the PMID necessary for requesting abstracts from database.
         """
-        wid = self.widgets['article_list']
-        if self.collect_articles():
-            formatted_articles = wid['su'].format_article_list(self.articles)
-        else:
-            formatted_articles = su.no_db()
-        self.clear('article_list')
-        self.call_cmd('article_list', 'add_item_list', formatted_articles.splitlines())
+        if self.manager.db_set:
+            logger.debug("Refreshing article list.")
+            wid = self.widgets['article_list']
+            if self.collect_articles():
+                formatted_articles = wid['su'].format_article_list(self.articles)
+            else:
+                formatted_articles = su.no_db()
+            self.clear('article_list')
+            self.call_cmd('article_list', 'add_item_list', formatted_articles.splitlines())
 
     def collect_articles(self) -> bool:
         """If DB is set up pulls a set of article titles.
@@ -166,9 +171,9 @@ class ReviewScreen(sm.MasterScreen):
         self.add_widget('article_list', 'add_scroll_menu', True, '',
                         su.StringUtils(x_dim=0, y_dim=0),
                         title='Entrez Menu',
-                        row=0,
+                        row=2,
                         column=0,
-                        row_span=10,
+                        row_span=8,
                         column_span=3,
                         padx=0
                         )

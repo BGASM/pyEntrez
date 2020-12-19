@@ -11,10 +11,12 @@ Created: 11/23/2020
 
 import os
 from typing import Any, Dict, Optional
-
+import subprocess
+import threading
 import attr
 # Logger
 from loguru import logger
+import asyncio
 
 # This is where we will import all sub-component modules
 import pyentrez
@@ -50,14 +52,17 @@ class EntrezManager(object):
         current_state (str): What state the application is in, initialization or current screen.
     """
 
-    root: Any = attr.ib()
+    root = attr.ib()
     current_state = attr.ib(default='Initialization')
     mgr = attr.ib(default={})
     widget = attr.ib(default={})
     scrape = attr.ib()
     mdb = attr.ib()
-
+    db_set = attr.ib(init=False, default = False)
+    operation_thread = attr.ib(init=False)
+    # -------------------------------------------------
     # Start of Initialization functions
+    # -------------------------------------------------
     @scrape.default
     def _scraper_initialization(self):
         return SCRAPE.Scraper(self)
@@ -104,7 +109,51 @@ class EntrezManager(object):
         self.widget.update(self._widget_initialization())
         self.open_window('FETCH')
 
+    # -------------------------------------------------
     # End of Initialization functions
+    # -------------------------------------------------
+    def perform_long_operation(self, title, long_operation_function, post_loading_callback):
+        """Function that wraps an operation around a loading icon popup.
+
+        Args:
+        title (str): title for loading icon
+        long_operation_function (Any): operation to perform in the background
+        post_loading_callback (Any): Function fired once long operation is finished.
+        """
+
+        logger.info(f'Executing long operation {title}')
+        self.root.show_loading_icon_popup('Please Wait', title, callback=post_loading_callback)
+        self.operation_thread = threading.Thread(target=long_operation_function)
+        self.operation_thread.start()
+
+    def load_db(self):
+        """Load the database."""
+        logger.debug("Loading database.")
+        out = None
+        err = 0
+        if self.mdb.initialize() == 1:
+            out = 'Mongo Client failed to connect.'
+            err = 1
+            logger.debug("Database failed to load")
+        else:
+            out = "Mongo Client connected!"
+            self.db_set = True
+            logger.debug("Database loaded")
+        return out, err
+
+    def fetch_query(self, results):
+        """Load the database."""
+        logger.debug("Fetching query.")
+        out = None
+        err = 0
+        if self.mdb.add_many(results) == 1:
+            out = 'Mongo Client failed to connect.'
+            err = 1
+            logger.debug("Database failed to load")
+        else:
+            out = "Query Fetched!"
+            logger.debug("Database loaded")
+        return out, err
 
     def refresh_h_w(self):
         """Calls for Screen instances to refresh widgets on a terminal resize event.
@@ -131,3 +180,5 @@ class EntrezManager(object):
         self.root.apply_widget_set(self.widget[manager])
         self.root.set_title(f'pyEntrez v{pyentrez.__version__} {manager}')
         self.current_state = manager
+
+

@@ -55,7 +55,7 @@ class SettingsScreen(sm.MasterScreen):
         menu: List[str] = self.setting_message.split(' ')
         if msg.isdigit():
             msg = int(msg)
-        su.update_settings(menu[0], msg)
+        su.StringUtils.update_settings(menu[0], msg)
         self.refresh_status()
 
     def initialize_screen_elements(self):
@@ -87,7 +87,7 @@ class SettingsScreen(sm.MasterScreen):
         # Logo and link labels
         self.add_widget('logo_label', 'add_block_label', False, su.get_logo(), None,
                         title='Logo Label',
-                        row=0,
+                        row=3,
                         column=0,
                         row_span=2,
                         column_span=3,

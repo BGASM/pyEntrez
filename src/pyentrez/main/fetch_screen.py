@@ -65,7 +65,7 @@ class FetchScreen(sm.MasterScreen):
             msg (str): String passed
         """
         menu: List[str] = self.setting_message.split(' ')
-        for setting in ev.get_settings():
+        for setting in ev.settings:
             if setting[0] == menu[0]:
                 error, err = logic.fetch_check(setting[0], msg)
                 if not error:
@@ -79,13 +79,22 @@ class FetchScreen(sm.MasterScreen):
 
     def query(self) -> None:
         """Submits query to configured db."""
+        if not self.manager.db_set:
+            self.execute_long_operation('Loading Database', self.load_db)
+        else:
+            self.execute_long_operation('Fetching Query.', self.fetch_query)
+
+    def fetch_query(self):
+        logger.debug("Loading new DB.")
         query_message = self.call_cmd('query_box', 'get')
         self.clear('query_box')
         uid = self.scraper.esearch(query_message)
         results = self.scraper.efetch(uid)
-        ids = self.manager.mdb.add_many(results)
+        self.message, self.status = self.manager.fetch_query(results)
+        self.refresh_settings()
+        self.manager.root.stop_loading_popup()
 
-    def update_info(self, tag='info_panel', msg='') -> None:
+    def update_info(self, tag='fetch_panel', msg='') -> None:
         """Wipes and replaces text on the main info block.
 
         Args:
@@ -94,14 +103,14 @@ class FetchScreen(sm.MasterScreen):
         ..
         """
         self.clear()
-        if tag == 'info_panel' and msg == '':
+        if tag == 'fetch_panel' and msg == '':
             self.call_cmd(tag, 'set_text', self.widgets[tag]['su'].get_entrez_help())
         else:
             self.call_cmd(tag, 'set_text', msg)
 
     def set_initial_values(self) -> None:
         """Function that initializes status bar for Fetch screen."""
-        self.call_cmd('info_panel', 'set_text', self.widgets['info_panel']['su'].get_entrez_help())
+        self.call_cmd('fetch_panel', 'set_text', self.widgets['fetch_panel']['su'].get_entrez_help())
         self.refresh_settings()
         self.manager.root.set_status_bar_text('Settings - Backspace | Quit - q')
 
@@ -130,11 +139,9 @@ class FetchScreen(sm.MasterScreen):
             fetch_screen_widget_set (py_cui.widget_set.WidgetSet):
             Widget set object for fetch control screen.
         """
+        # -------------------------------------------------
         # Widget Set
-        self.widget_set.add_key_command(
-            py_cui.keys.KEY_M_LOWER,
-            self.show_menu,
-        )
+        # -------------------------------------------------
         self.add_widget('query_box', 'add_text_box', False, '', None,
                         title='Entrez Query',
                         row=9,
@@ -148,7 +155,7 @@ class FetchScreen(sm.MasterScreen):
                     self.query,
                     )
         # Main info text block listing information for all pyEntrez operations
-        self.add_widget('info_panel', 'add_text_block', True, '', su.StringUtils(x_dim=0, y_dim=0),
+        self.add_widget('fetch_panel', 'add_text_block', True, '', su.StringUtils(x_dim=0, y_dim=0),
                         title='Entrez Info',
                         row=0,
                         column=4,
@@ -156,16 +163,16 @@ class FetchScreen(sm.MasterScreen):
                         column_span=4,
                         padx=0
                         )
-        self.update_SU('info_panel')
-        self.call_cmd('info_panel', 'set_selectable', True)
+        self.update_SU('fetch_panel')
+        self.call_cmd('fetch_panel', 'set_selectable', True)
 
         # Scrolling block for menu items
         self.add_widget('setting_box', 'add_scroll_menu', True, '',
                         su.StringUtils(x_dim=0, y_dim=0),
                         title='Entrez Menu',
-                        row=0,
+                        row=2,
                         column=0,
-                        row_span=8,
+                        row_span=6,
                         column_span=2,
                         padx=0
                         )
