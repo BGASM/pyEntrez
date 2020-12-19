@@ -15,7 +15,7 @@ style = "https://raw.githubusercontent.com/BGASM/pyentrez/main/styles/styleguide
 [tool.poetry]
 name = "pyentrez"
 description = "Terminal-based TUI suite of Biopython's Entrez tools."
-version = "0.1.0"
+version = "0.1.1"
 license = "MIT"
 authors = ["William Slattery <slatte26@msu.edu>"]
 readme = "README.rst"
