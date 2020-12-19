@@ -14,7 +14,7 @@ import attr
 # noinspection PyPep8Naming
 from Bio import Entrez as ez
 from Bio import Medline as ml
-
+from loguru import logger
 from pyentrez.utils import envars as ev
 
 
@@ -94,7 +94,7 @@ def construct_search_params():
     """
     params = {}
     for setting in ev.settings_eSearch:
-        if os.environ.get(setting[1]):
+        if os.environ.get(setting[1]) != 'None':
             params.update({setting[0].lower(): os.environ.get(setting[1])})
     return params
 

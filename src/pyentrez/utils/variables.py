@@ -125,7 +125,7 @@ ENTREZSETTINGS = [
         'args': ['--usehistory'],
         'kwargs': {
             'type': str,
-            'default': 'n',
+            'default': None,
             'help': 'set to "y" to use ESearch History server. Default = "n"',
         },
         'setting': {'envar': 'PYENT_USEHISTORY', 'text': 'usehistory'},
@@ -155,7 +155,7 @@ ENTREZSETTINGS = [
         'args': ['--reldate'],
         'kwargs': {
             'type': int,
-            'default': -1,
+            'default': None,
             'help': '''When reldate is set to an integer n, the
         search returns only those items that have a date specified by datetype within the last n days.
         Default is = -1.''',
@@ -184,7 +184,15 @@ ENTREZSETTINGS = [
         },
         'setting': {'envar': 'PYENT_MAXDATE', 'text': 'maxdate'},
     },
-    {'setting': {'envar': 'PYENT_WEBENV', 'text': 'webenv'}},
+    {
+        'args': ['--webenv'],
+        'kwargs': {
+            'type': str,
+            'default': None,
+            'help': '''If using history, this will be the webenv''',
+        },
+        'setting': {'envar': 'PYENT_WEBENV',  'text': 'webenv'},
+    },
     {'setting': {'envar': 'PYENT_QUERYKEY', 'text': 'query_key'}},
     {'setting': {'envar': 'PYENT_RETSTART', 'text': 'retstart'}},
     {'setting': {'envar': 'PYENT_USER', 'text': 'user'}},
