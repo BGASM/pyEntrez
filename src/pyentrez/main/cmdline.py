@@ -174,7 +174,7 @@ class GetParser(object):
 class CLI(object):
     version: str = attr.ib(default=pyentrez.__version__)
     copyright: str = attr.ib(default=pyentrez.__copyright__)
-    catastrophic_failure: Optional[bool] = attr.ib(default=None)
+    catastrophic_failure: Optional[bool] = attr.ib(default=False)
     args: Any = attr.ib(init=False)
 
     def initialize(self):
@@ -188,11 +188,13 @@ class CLI(object):
             print(self.copyright)
             raise SystemExit(self.catastrophic_failure)
         elif self.args['INIT']:
+            logger.debug('User making a new workspace.')
             uc.first_run()
         else:
             pyentrez.configure_logger(self.args['verbose'], self.args['output'])
             ev.setenv(self.args)
             if self.args['TUI'] == 'on':
+                logger.debug('Starting in TUI mode')
                 self.starttui()
             else:
                 self.notui()

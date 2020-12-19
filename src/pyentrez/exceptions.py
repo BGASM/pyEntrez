@@ -7,7 +7,9 @@ class PyEntrezException(Exception):
 
 class EarlyQuit(PyEntrezException):
     """Except raised when encountering a KeyboardInterrupt."""
+    pass
 
 
 class ExecutionError(PyEntrezException):
     """Exception raised during execution of pyentrez."""
+    pass

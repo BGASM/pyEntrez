@@ -67,11 +67,6 @@ class ScreenManager(object):
 @attr.s(kw_only=True)
 class ScreenProcessor(object):
     """Placeholder."""
-    __slots__ = ()
-
-    def __init__(self, **kwargs) -> None:
-        """Placeholder."""
-        super().__init__(**kwargs)
 
     def initialize_screen_elements(self) -> None:
         """Function that must be overridden by subscreen.
