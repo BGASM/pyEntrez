@@ -17,7 +17,6 @@ import pyentrez
 from pyentrez import entrez_scraper as SCRAPE
 from pyentrez.main import screen_manager as sm
 from pyentrez.utils import envars as ev
-from pyentrez.utils import logger_utils as lu
 from pyentrez.utils import logic
 from pyentrez.utils import string_utils as su
 

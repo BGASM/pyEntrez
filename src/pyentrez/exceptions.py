@@ -13,3 +13,7 @@ class EarlyQuit(PyEntrezException):
 class ExecutionError(PyEntrezException):
     """Exception raised during execution of pyentrez."""
     pass
+
+class CleanExit(PyEntrezException):
+    """Exception raised when app should exit normally."""
+    pass
