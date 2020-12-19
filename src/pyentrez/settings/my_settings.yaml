@@ -1,17 +1,14 @@
-# Default Config Settings
-
-# Scraper Settings
-email: notarealemail@fake.edu
-user: None
+INIT: false
+mongo: true
+cloud: false
 db: pubmed
-sort: relevance
-retmax: 200
+email: notarealemail@fake.edu
+output: P:\_Projects\pyentrez\logs\pyentrez.log
+retmax: 100
 retmode: txt
 rettype: medline
-
-# Command Line Settings
-version: False
-credentials: False
-mongo: False
-TUI: False
-INIT: False
+sort: relevance
+verbose: 1
+uri: mongodb+srv://entrez_dev:test@cluster0.tlkqq.mongodb.net/test?retryWrites=true&w=majority
+host: 127.0.0.1
+port: 27017

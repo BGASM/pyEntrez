@@ -31,15 +31,16 @@ class ScreenManager(object):
 
     manager: Any = attr.ib(kw_only=True)
     scraper: Any = attr.ib(kw_only=True)
-    setting_message: Optional[str] = attr.ib(init=False, default=None)
+    setting_message: Optional[str] = attr.ib(init=False, default='Master Screen Manager')
     screen_type: str = attr.ib(init=False, default='manager')
+    info_panel: Any = attr.ib(init=False)
     menu_choices: List[Any] = attr.ib(init=False,
                                       default=[
                                           'Enter Credentials',
                                           'DB List',
                                           'About',
                                           'Exit',
-                                      ])
+    ])
 
     def show_menu_popup(self):
         menu_choices = ['Fetch', 'Review', 'Settings', 'Exit']
@@ -65,9 +66,11 @@ class ScreenManager(object):
 
 
 @attr.s(kw_only=True)
-class ScreenProcessor(object):
+class ScreenProcessor(ScreenManager):
     """Placeholder."""
 
+    message = attr.ib(init=False)
+    status = attr.ib(init=False, default=0)
     def initialize_screen_elements(self) -> None:
         """Function that must be overridden by subscreen.
 
@@ -82,9 +85,6 @@ class ScreenProcessor(object):
 
         Implement in subclasses.
         """
-
-    def clear_elements(self) -> None:
-        """Function that clears entries from widgets for reuse."""
 
     def update_info(self, msg: str) -> None:
         """Wipes and replaces text on the main info panel.
@@ -101,11 +101,104 @@ class ScreenProcessor(object):
     def clear_elements(self, *args):
         """Placeholder."""
 
+    def load_db(self):
+        logger.debug("Loading new DB.")
+        self.message, self.status = self.manager.load_db()
+        self.refresh_settings()
+        self.manager.root.stop_loading_popup()
+
+    def refresh_settings(self):
+        """Placeholder."""
+
+    def show_command_result(self,
+                            out,
+                            err: int,
+                            show_on_success=True,
+                            command_name='Command',
+                            success_message='Success',
+                            error_message='Error'
+                            ):
+        """Function that displays the result of stdout/err for an external command.
+
+        Parameters
+        ----------
+        out : str
+            stdout string from command
+        err : str
+            stderr string from command
+        show_on_success : bool
+            Set to false to show no messages on success. (ex. git log doesnt need success message)
+        command_name : str
+            name of command run.
+        success_message : str
+            message to show on successful completion
+        error_message : str
+            message to show on unsuccessful completion
+        """
+
+        show_in_box = False
+        stripped_output = out.strip()
+        if len(out.splitlines()) > 1:
+            popup_message = "Check Info Box For {} Output".format(command_name)
+            show_in_box = True
+        else:
+            popup_message = stripped_output
+        if err != 0:
+            self.manager.root.show_error_popup(error_message, popup_message)
+        elif show_on_success:
+            self.manager.root.show_message_popup(success_message, popup_message)
+        if show_in_box and (err != 0 or show_on_success):
+            box_out = out
+            if err != 0:
+                err_out = '\n'
+                temp = out.splitlines()
+                for line in temp:
+                    err_out = err_out + '- ' + line + '\n'
+                box_out = err_out
+            self.info_panel.title = '{} Output'.format(command_name)
+            self.info_panel.set_text(box_out)
+
+    def show_status_long_op(self, name='Command', succ_message="Success", err_message = "Error"):
+        """Shows the status of a long(async) operation on success completion
+
+        Parameters
+        ----------
+        name : str
+            name of command run.
+        succ_message : str
+            message to show on successful completion
+        err_message : str
+            message to show on unsuccessful completion
+        """
+
+        logger.debug("In show_status.")
+        self.show_command_result(self.message,
+                                 self.status,
+                                 command_name=name,
+                                 success_message=succ_message,
+                                 error_message=err_message,
+        )
+        self.message = ''
+        self.status = 0
+
+    def execute_long_operation(self, loading_message, long_op_function):
+        """Wrapper function that allows for executing long operations w/ credential requirements.
+
+        Parameters
+        ----------
+        loading_message : str
+            Message displayed while async op is performed
+        long_op_function : no-arg or lambda function
+            Function that is fired in an async second thread
+        """
+
+        self.manager.perform_long_operation(loading_message, long_op_function,
+                                            self.show_status_long_op)
 
 @attr.s
 class WidgetRing(object):
     widgets = attr.ib(init=False, default={})
-    widget_set: Any = attr.ib(init=False)
+    widget_set = attr.ib(init=False)
 
     def addkey(self, tag, *args):
         if tag == 'set':
@@ -159,7 +252,7 @@ class WidgetRing(object):
 
 
 @attr.s
-class MasterScreen(ScreenManager, ScreenProcessor, WidgetRing):
+class MasterScreen(ScreenProcessor, WidgetRing):
     """Class responsible for managing Fetch screen functions.
 
     Attributes:
@@ -168,13 +261,37 @@ class MasterScreen(ScreenManager, ScreenProcessor, WidgetRing):
     """
     manager: Any = attr.ib(kw_only=True)
     scraper: Any = attr.ib(kw_only=True)
-    screen_type = attr.ib(init=False, default='Master Screen Manager')
     widget_set = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         self.widget_set = self.manager.root.create_new_widget_set(10, 8)
         self.widget_set.add_key_command(py_cui.keys.KEY_BACKSPACE, self.show_menu_popup)
         self._check_validation()
+        # -------------------------------------------------
+        # Widget Set + Info Panel
+        # -------------------------------------------------
+        self.widget_set.add_key_command(
+            py_cui.keys.KEY_M_LOWER,
+            self.show_menu,
+        )
+        self.add_widget(
+                'info_panel',
+                'add_text_block',
+                True,
+                '',
+                su.StringUtils(x_dim=0, y_dim=0),
+                title='Entrez Info',
+                row=0,
+                column=0,
+                row_span=2,
+                column_span=2,
+                padx=0
+        )
+        self.update_SU('info_panel')
+        self.info_panel = self.widgets['info_panel']
+
+    def initialize_screen_elements(self) -> Any:
+        """Function that initializes the widgets for screen."""
 
     def v1(self):
         if not (isinstance(self.manager, pyentrez.main.entrez_manager.EntrezManager)):

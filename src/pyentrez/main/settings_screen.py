@@ -85,9 +85,9 @@ class SettingsScreen(sm.MasterScreen):
                     self.settings_select,
                     )
         # Logo and link labels
-        self.add_widget('logo_label', 'add_block_label', False, su.StringUtils.get_logo(), None,
+        self.add_widget('logo_label', 'add_block_label', False, su.get_logo(), None,
                         title='Logo Label',
-                        row=0,
+                        row=3,
                         column=0,
                         row_span=2,
                         column_span=3,
@@ -130,3 +130,4 @@ class SettingsScreen(sm.MasterScreen):
         self.call_cmd('settings_menu', 'add_item_list',
                       self.widgets['settings_menu']['su'].get_setting().splitlines())
         self.manager.root.set_status_bar_text('Settings - Backspace | Quit - q')
+
