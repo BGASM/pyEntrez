@@ -9,7 +9,7 @@ line-length = 100
 skip-string-normalization = true
 
 # [tool.nitpick]
-# style = "https://raw.githubusercontent.com/wemake-services/wemake-python-styleguide/master/styles/nitpick-style-wemake.toml"
+style = "https://raw.githubusercontent.com/BGASM/pyentrez/main/styles/styleguide.toml"
 
 
 [tool.poetry]
