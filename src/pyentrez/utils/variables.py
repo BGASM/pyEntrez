@@ -38,7 +38,7 @@ APPSETTING = [
         # 'setting': {'envar': <envar>, 'text': <text>}
     },
     {
-        'args': ['--MONGO'],
+        'args': ['--mongo'],
         'kwargs': {
             'action': 'store_true',
             'default': False,
@@ -46,6 +46,41 @@ APPSETTING = [
         or commandline. Default = off.''',
         },
         'setting': {'envar': 'PYENT_MONGO', 'text': 'mongo'},
+    },
+    {
+        'args': ['--cloud'],
+        'kwargs': {
+            'action': 'store_true',
+            'default': False,
+            'help': '''Use mongoDB
+        on cloud or local. Default = False.''',
+        },
+        'setting': {'envar': 'PYENT_CLOUD', 'text': 'cloud'},
+    },
+    {
+        'args': ['--uri'],
+        'kwargs': {
+            'type': str,
+            'help': '''If using cloud mongoDB
+       enter uri.''',
+        },
+        'setting': {'envar': 'PYENT_URI', 'text': 'uri'},
+    },
+    {
+        'args': ['--host'],
+        'kwargs': {
+            'type': str,
+            'help': '''MongoDB host.''',
+        },
+        'setting': {'envar': 'PYENT_HOST', 'text': 'host'},
+    },
+    {
+        'args': ['--port'],
+        'kwargs': {
+            'type': str,
+            'help': '''MongoDB port.''',
+        },
+        'setting': {'envar': 'PYENT_PORT', 'text': 'port'},
     },
     {
         'args': ['--verbose', '-v'],
@@ -83,8 +118,8 @@ ENTREZSETTINGS = [
             'type': str,
             'default': 'relevance',
             'help': '''Specifies the method used to sort UIDs in the
-        ESearch output. The available values vary by database (db) and may be found in the Display Settings menu
-        on an Entrez search results page. Default = relevance''',
+        ESearch output. The available values vary by database (db) and may be found in the Display
+        Settings menu on an Entrez search results page. Default = relevance''',
         },
         'setting': {'envar': 'PYENT_SORT', 'text': 'sort'},
     },

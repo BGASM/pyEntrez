@@ -8,7 +8,7 @@ Sets all the parsed settings to envars
 """
 from os import environ as env
 from typing import Any, Dict, List, Tuple
-
+from loguru import logger
 from pyentrez.utils import variables as vl
 
 # Default envars:

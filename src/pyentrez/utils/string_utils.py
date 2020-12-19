@@ -101,7 +101,7 @@ class StringUtils(object):
         settinglist = settinglist / 'my_settings.yaml'
         with open(settinglist, 'r') as sdata:
             settings_dict = sl(sdata)
-        for key in settings_dict.items():
+        for key in settings_dict:
             settings.append(f'{key:<15}{str(settings_dict[key])}')
         return r1.join(settings)
 
@@ -121,7 +121,7 @@ class StringUtils(object):
             dmp(in_dict, file_out)
         ev.setenv(in_dict)
 
-    
+
 def get_entrez(setting: str) -> List[str]:
     """Returns list of available entrez dbs."""
     logger.info(f'{dbdata}')

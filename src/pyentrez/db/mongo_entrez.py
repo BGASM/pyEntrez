@@ -1,14 +1,12 @@
 import json
 from pathlib import Path
 from typing import Any, Optional
+from loguru import logger
 
 import attr
 from pymongo import MongoClient as MC
-
 from pyentrez.utils import pathloc as pl
 
-t_host = '127.0.0.1'
-t_port = 27017
 
 stringlist = Path(pl.get_db_path() / 'db_files' / 'test_data.json')
 with stringlist.open() as stringfile:
@@ -23,21 +21,27 @@ def condense_b(cursor):
     return tuple([cursor['PMID'], cursor['AB'], cursor['TI']])
 
 
-@attr.s
+@attr.s(auto_attribs=True, kw_only=True)
 class DBLoader:
-    manager: Optional[Any] = attr.ib(default=None)
-    host: str = attr.ib(default=t_host)
-    port: str = attr.ib(default=t_port)
-    d1: str = attr.ib(default='test')
-    c1: str = attr.ib(default='articles')
+    manager: Optional[Any] = None
+    host: Optional[str] = None
+    port: Optional[str] = None
+    uri: Optional[str] = None
+    cloud: bool = False
+    d1: str = 'test'
+    c1: str = 'articles'
     client: Any = attr.ib(init=False)
     db: Any = attr.ib(init=False)
     coll: Any = attr.ib(init=False)
 
     def __attrs_post_init__(self):
-        self.client = connect_client(self.host, self.port)
+        if self.cloud:
+            self.client = connect_client(self.uri)
+        else:
+            self.client = connect_client(self.host, self.port)
         self.db = get_db(self.client, self.d1)
         self.coll = get_coll(self.db, self.c1)
+
 
     def get_titles(self):
         titles = self.coll.find({}, {"PMID": 1, "TI": 1, "_id": 0})
@@ -63,8 +67,8 @@ class DBLoader:
         return result
 
 
-def connect_client(host, port):
-    return MC(host, port)
+def connect_client(*args):
+    return MC(*args)
 
 
 def get_db(client, db):

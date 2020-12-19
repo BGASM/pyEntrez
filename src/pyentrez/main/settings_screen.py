@@ -130,3 +130,4 @@ class SettingsScreen(sm.MasterScreen):
         self.call_cmd('settings_menu', 'add_item_list',
                       self.widgets['settings_menu']['su'].get_setting().splitlines())
         self.manager.root.set_status_bar_text('Settings - Backspace | Quit - q')
+

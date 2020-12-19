@@ -65,8 +65,21 @@ class EntrezManager(object):
     @mdb.default
     def _mdb_initialization(self):
         db = None
-        if os.environ.get('PYENT_MONGO') is not None:
-            db = MDB.DBLoader(self)
+        if (os.environ.get('PYENT_MONGO')) == 'True':
+            if os.environ.get('PYENT_CLOUD') == 'True':
+                logger.info(f'Cloud-based Mongo client. URI: {os.environ.get("PYENT_URI")}')
+                db = MDB.DBLoader(manager=self,
+                                  cloud=True,
+                                  uri=os.environ.get('PYENT_URI'),
+                )
+            else:
+                logger.info(f'Local Mongo client. Host: {os.environ.get("PYENT_HOST")}'
+                             f'  PORT: {os.environ.get("PYENT_PORT")}')
+                db = MDB.DBLoader(manager=self,
+                                  cloud=False,
+                                  host=os.environ.get('PYENT_HOST'),
+                                  port=int(os.environ.get('PYENT_PORT')),
+                )
         return db
 
     def _manager_initialization(self):

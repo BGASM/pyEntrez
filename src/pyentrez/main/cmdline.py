@@ -214,9 +214,10 @@ class CLI(object):
             pyentrez.configure_logger(self.args['verbose'], self.args['output'])
             ev.setenv(self.args)
             if self.args['TUI'] == 'on':
-                logger.debug('Starting in TUI mode')
+                logger.info('Starting in TUI mode')
                 self.starttui()
             else:
+                logger.info('Starting in interactive cmd mode')
                 self.notui()
 
     def notui(self) -> None:
