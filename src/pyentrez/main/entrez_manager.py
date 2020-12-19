@@ -116,5 +116,5 @@ class EntrezManager(object):
             self.mgr[self.current_state].clear_elements()
         self.mgr[manager].set_initial_values()
         self.root.apply_widget_set(self.widget[manager])
-        self.root.set_title(f'pyEntrez v{su.StringUtils.g_v()} {manager}')
+        self.root.set_title(f'pyEntrez v{pyentrez.__version__} {manager}')
         self.current_state = manager
