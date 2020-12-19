@@ -1,12 +1,11 @@
 """Utility module for handling strings."""
 import json
 import os
+import attr
 import textwrap
-from importlib.metadata import distribution as dist
 from pathlib import Path
 from shutil import copy2 as cp
 from typing import List
-import attr
 
 from loguru import logger
 from yaml import dump as dmp
@@ -28,17 +27,10 @@ r2 = '\n\n'
 r3 = '\n\n\n'
 t1 = '\t'
 
-'''
-class wrap(textwrap.TextWrapper):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.break_long_words = False
-        self.break_on_hyphens = False
-        self.tabsize=4
-'''
 
 @attr.s
 class StringUtils(object):
+    """Instance used for cases where text wrapping is required, otherwise classmethods are used."""
     x_dim = attr.ib()
     y_dim = attr.ib()
     wrapp: textwrap.TextWrapper() = attr.ib()
@@ -51,7 +43,6 @@ class StringUtils(object):
             break_long_words=False,
             break_on_hyphens=False,
         )
-
 
     def update_dim(self, x_dim, y_dim):
         """Update xy dimensions of the wrapper."""
@@ -110,13 +101,14 @@ class StringUtils(object):
         settinglist = settinglist / 'my_settings.yaml'
         with open(settinglist, 'r') as sdata:
             settings_dict = sl(sdata)
-        for key in settings_dict:
+        for key in settings_dict.items():
             settings.append(f'{key:<15}{str(settings_dict[key])}')
         return r1.join(settings)
 
     # noinspection PyUnusedLocal
     @staticmethod
     def update_settings(key, value) -> None:
+        """Creates a dict of settings set by the user and then sends them to envars."""
         s1: Path = pl.get_user_workspace()
         s2: Path = s1 / 'my_settings.yaml'
         cp(s2, s1 / 'my_settings_backup.yaml')
@@ -126,62 +118,66 @@ class StringUtils(object):
             in_dict = sl(file_in)
         in_dict.update(pair)
         with open(s2, 'w') as file_out:
-            out = dmp(in_dict, file_out)
+            dmp(in_dict, file_out)
         ev.setenv(in_dict)
 
-    @staticmethod
-    def get_entrez(setting: str) -> List[str]:
-        logger.info(f'{dbdata}')
-        return dbdata.get(setting)
+    
+def get_entrez(setting: str) -> List[str]:
+    """Returns list of available entrez dbs."""
+    logger.info(f'{dbdata}')
+    return dbdata.get(setting)
 
-    @staticmethod
-    def get_new_path(path) -> str:
-        msg = [f'{str(path)} does not exist.', 'Should we create it (Yes, No)?', '.: ']
-        return str(input(r1.join(msg)))
 
-    @staticmethod
-    def gu_create(switch) -> str:
-        if switch == 0:
-            jdata['NEWUSR'][0].append(str(pl.uhome()))
-            ucreate = ' '.join(jdata['NEWUSR'][0])
-        else:
-            ucreate = input(r1.join(jdata['NEWUSR'][1]))
-        return ucreate
+def get_new_path(path) -> str:
+    """Accepts path input and returns it."""
+    msg = [f'{str(path)} does not exist.', 'Should we create it (Yes, No)?', '.: ']
+    return str(input(r1.join(msg)))
 
-    @staticmethod
-    def gu_ow() -> str:
-        return input(r1.join(jdata['OVERWRITE']))
 
-    @staticmethod
-    def get_logo() -> str:
-        """Parses long string from json file.
+def gu_create(switch) -> str:
+    """Returns ucreate."""
+    if switch == 0:
+        jdata['NEWUSR'][0].append(str(pl.uhome()))
+        ucreate = ' '.join(jdata['NEWUSR'][0])
+    else:
+        ucreate = input(r1.join(jdata['NEWUSR'][1]))
+    return ucreate
 
-        Returns:
-            str: Appended and joined string from json file.
-        """
-        logo = []
-        for strlist in jdata['LOGO']:
-            logo.append(strlist)
-        return r1.join(logo)
 
-    @staticmethod
-    def g_v() -> str:
-        return str(dist('pyentrez').version)
+def gu_ow() -> str:
+    """Returns Overwrite string."""
+    return input(r1.join(jdata['OVERWRITE']))
 
-    @staticmethod
-    def no_db() -> str:
-        return input(r1.join(jdata['NO_DB']))
+
+def get_logo() -> str:
+    """Parses long string from json file.
+
+    Returns:
+        str: Appended and joined string from json file.
+    """
+    logo = []
+    for strlist in jdata['LOGO']:
+        logo.append(strlist)
+    return r1.join(logo)
+
+
+def no_db() -> str:
+    """Returns NO_DB string."""
+    return input(r1.join(jdata['NO_DB']))
 
 
 def clear():
+    """Uses OS-appropriate clear function in terminal."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+@attr.s
 class InteractivePrompt(object):
-    def __init__(self, topmanager):
-        self.manager = topmanager
+    """Instance of interactive cmd prompt pyentrez."""
+    manager = attr.ib()
 
     def input(self, script):
+        """Takes user input and displays appropriate responses."""
         stringbuff = []
         for strlist in jdata[script]:
             stringbuff.append(strlist)

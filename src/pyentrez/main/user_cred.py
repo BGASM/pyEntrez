@@ -42,12 +42,12 @@ def first_run() -> None:
     """
     fwd = False
     while fwd is False:
-        print(su.StringUtils.gu_create(0))
-        npth: str = lg.three_arg_sel(su.StringUtils.gu_create(1), str(pl.uhome()), '')  # noqa: WPS221
+        print(su.gu_create(0))
+        npth: str = lg.three_arg_sel(su.gu_create(1), str(pl.uhome()), '')  # noqa: WPS221
         npth = npth.split(drs[2])[0]
         path: Path = Path(npth) / drs[2]
         if lg.path_set(path):
-            fwd = lg.test_bool(su.StringUtils.gu_ow(), 'FORCE')
+            fwd = lg.test_bool(su.gu_ow(), 'FORCE')
             rt(path, ignore_errors=True)
         else:
             fwd = True

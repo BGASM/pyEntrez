@@ -1,5 +1,4 @@
-"""Module handles complex logic functions that don't need to be explicitly stated in other places.
-"""
+"""Handles complex logic functions that don't need to be explicitly stated in other places."""
 from pathlib import Path
 from typing import Tuple
 
@@ -61,13 +60,16 @@ def path_set(path: Path) -> bool:
 
     Returns:
         tryagain (bool): True stops calling function, False allows to continue.
+    
+    Raises:
+        CleanExit: If no path set this enables application to exit.
     """
     tryagain = True
     access: int = 0o755
     if path.exists():
         tryagain = True
     else:
-        md = su.StringUtils.get_new_path(path)
+        md = su.get_new_path(path)
         if md.lower() == 'yes' or 'y':
             try:
                 path.mkdir(mode=access)
