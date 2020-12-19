@@ -48,9 +48,9 @@ def configure_logger(verbosity, filename=None, format=LOG_FORMAT) -> None:
     logger.add(
         fileobj,
         level=log_level,
-        colorize=True,
+        colorize=False,
         backtrace=True,
-        diagnose=False,
+        diagnose=True,
         rotation='500 MB',
         format=LOG_FORMAT,
     )
