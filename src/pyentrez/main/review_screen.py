@@ -122,7 +122,7 @@ class ReviewScreen(sm.MasterScreen):
         if self.collect_articles():
             formatted_articles = wid['su'].format_article_list(self.articles)
         else:
-            formatted_articles = su.StringUtils.no_db()
+            formatted_articles = su.no_db()
         self.clear('article_list')
         self.call_cmd('article_list', 'add_item_list', formatted_articles.splitlines())
 
