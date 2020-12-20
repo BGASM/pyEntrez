@@ -50,9 +50,9 @@ loguru = "^0.5.3"
 py-cui = "^0.1.2"
 bio = "^0.1.9"
 PyYAML = "^5.3.1"
+pymongo = "^3.11.2"
 
 # Extras
-pymongo = { version = "^3.11.2", optional = true }
 black = { version = "^20.8b1", optional = true }
 hunter = { version = "^3.3.1", optional = true }
 
@@ -66,8 +66,7 @@ dnspython = "^2.0.0"
 
 [tool.poetry.extras]
 nlp = ["scispacy", "tldextract", "nmslib", "en_core_sci_lg"]
-lint = ["mypy", "wemake-python-styleguide", "flake8-pytest-style", "black", "hunter"]
-mongo = ["pymongo"]
+lint = ["black", "hunter"]
 lorem = ["lorem"]
 
 [tool.poetry.dev-dependencies]
