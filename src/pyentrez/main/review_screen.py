@@ -49,6 +49,7 @@ class ReviewScreen(sm.MasterScreen):
     setting_message: Optional[str] = attr.ib(init=False)
     paper: Optional[set] = attr.ib(init=False)
     articles: Optional[set] = attr.ib(init=False)
+    collections: Optional[set] = attr.ib(init=False)
 
     def fetch_setting_select(self) -> None:
         """Gets a highlighted string from the menu and toggles.
@@ -122,10 +123,23 @@ class ReviewScreen(sm.MasterScreen):
             self.articles Set contains the PMID necessary for requesting abstracts from database.
         """
         if self.manager.db_set:
+            # ----------------------------
+            # Refresh list of collections
+            # ----------------------------
+            logger.debug('Refreshing collection list.')
+            collection = self.widgets['info_panel']
+            formatted_collections = collection['su'].format_article_list(
+                self.manager.mdb.list_collections()
+            )
+            self.clear('info_panel')
+            self.call_cmd('info_panel', 'add_item_list', formatted_collections.splitLines())
+            # ----------------------------
+            # Refresh list of articles
+            # ----------------------------
             logger.debug("Refreshing article list.")
-            wid = self.widgets['article_list']
+            article = self.widgets['article_list']
             if self.collect_articles():
-                formatted_articles = wid['su'].format_article_list(self.articles)
+                formatted_articles = article['su'].format_article_list(self.articles)
             else:
                 formatted_articles = su.no_db()
             self.clear('article_list')

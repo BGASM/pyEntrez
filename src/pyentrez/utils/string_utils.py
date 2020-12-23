@@ -165,6 +165,9 @@ def no_db() -> str:
     """Returns NO_DB string."""
     return input(r1.join(jdata['NO_DB']))
 
+def no_coll() -> str:
+    """Returns NO_DB string."""
+    return input(r1.join(jdata['NO_COLL']))
 
 def clear():
     """Uses OS-appropriate clear function in terminal."""

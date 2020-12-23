@@ -85,6 +85,8 @@ def connect_client(*args):
 def get_db(client, db):
     return client[db]
 
+def list_collections(db):
+    return db.list_collection_names()
 
 def get_coll(db, coll):
     return db[coll]

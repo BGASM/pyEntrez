@@ -71,5 +71,8 @@
   "NO_DB": [
     "You do not have a Database Client selected.",
     "To browse articles you need to configure your DB in my_settings."
+  ],
+  "NO_COLL": [
+    "Your database has no collections."
   ]
 }
